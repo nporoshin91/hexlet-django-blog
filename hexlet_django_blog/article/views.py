@@ -1,7 +1,8 @@
-from django.shortcuts import render
-
-from hexlet_django_blog.article.apps import ArticleConfig
+from hexlet_django_blog.views import IndexView
 
 
-def index(request):
-    return render(request, 'articles/index.html', context={"name": ArticleConfig.name})
+class ArticleView(IndexView):
+    template_name = 'articles/index.html'
+
+    def get_context_data(self, **kwargs):
+        return super(ArticleView, self).get_context_data(**kwargs)

@@ -1,7 +1,8 @@
 from django.urls import path
 
 from hexlet_django_blog.article import views
+from hexlet_django_blog.article.apps import ArticleConfig
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.ArticleView.as_view(), {"name": ArticleConfig.name}),
 ]
