@@ -5,6 +5,11 @@
     <title>hdb/article</title>
 </head>
 <body>
+{% if name %}
 Application name is {{ name }}
+{% endif %}
+{% if article_id and tags %}
+Статья номер {{ article_id }}. Тег {{ tags }}
+{% endif %}
 </body>
 </html>
