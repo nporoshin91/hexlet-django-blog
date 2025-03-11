@@ -5,5 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "black>=25.1.0",
+    "dj-database-url>=2.3.0",
     "django>=5.1.6",
+    "isort>=6.0.1",
+    "python-dotenv>=1.0.1",
 ]
+[tool.isort]
+profile = "black"
