@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import DateFieldListFilter
 
-from hexlet_django_blog.article.models import Article
+from hexlet_django_blog.articles.models import Article
 
 
 @admin.register(Article)
