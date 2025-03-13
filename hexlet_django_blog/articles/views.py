@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
+from hexlet_django_blog.articles.forms import ArticleForm
 from hexlet_django_blog.articles.models import Article
 
 
@@ -11,13 +13,30 @@ class IndexView(TemplateView):
         return super(IndexView, self).get_context_data(**kwargs)
 
     def get(self, request, *args, **kwargs):
-        articles = Article.objects.all()[:15]
+        articles = Article.objects.all()
         return render(request, self.template_name, {"articles": articles})
 
 
 class ArticleView(TemplateView):
-    template_name = "articles/article_details.html"
+    template_name = "articles/details.html"
 
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, id=kwargs.get("article_id"))
         return render(request, self.template_name, {"article": article})
+
+
+class ArticleFormCreateView(TemplateView):
+    template_name = "articles/create.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {"form": ArticleForm()})
+
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Статья успешно создана!")
+            return redirect("articles")
+
+        messages.error(request, "Ошибка! Проверьте форму.")
+        return render(request, self.template_name, {"form": form})
