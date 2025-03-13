@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 {% extends "base.html" %}
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Эксперименты с Django на Хекслете{% endblock %}</title>
-</head>
-<body>
+
+{% block title %}О блоге{% endblock %}
+
 {% block content %}
-<h1>О блоге</h1>
-<p>Эксперименты с Django на Хекслете</p>
-<p>{{ tags|join:', ' }}</p>
+<div class="container mt-4">
+    <h1>📖 О блоге</h1>
+    <p>Этот блог — эксперименты с Django на Хекслете.</p>
+</div>
 {% endblock %}
-</body>
-</html>

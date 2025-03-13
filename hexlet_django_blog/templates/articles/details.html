@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
 {% extends "base.html" %}
-<head>
-    <meta charset="UTF-8">
-    <title>{{ article.name }}</title>
-</head>
-<body>
+
+{% block title %}{{ article.name }}{% endblock %}
+
 {% block content %}
-<h1>{{ article.name }}</h1>
-<div>{{ article.body }}</div>
+<div class="container mt-4">
+    <h1 class="fw-bold">{{ article.name }}</h1>
+    <div class="card shadow-sm p-4">
+        <p>{{ article.body }}</p>
+    </div>
+</div>
 {% endblock %}
-</body>
-</html>

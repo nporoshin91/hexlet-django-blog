@@ -40,3 +40,33 @@ class ArticleFormCreateView(TemplateView):
 
         messages.error(request, "Ошибка! Проверьте форму.")
         return render(request, self.template_name, {"form": form})
+
+
+class ArticleFormEditView(TemplateView):
+    template_name = "articles/edit.html"
+
+    @staticmethod
+    def get_article_by_id(**kwargs):
+        return get_object_or_404(Article, id=kwargs.get("id"))
+
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm(instance=self.get_article_by_id(**kwargs))
+        return render(
+            request,
+            "articles/update.html",
+            {"form": form, "article_id": kwargs.get("id")},
+        )
+
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST, instance=self.get_article_by_id(**kwargs))
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Статья успешно обновлена!")
+            return redirect("articles")
+
+        messages.error(request, "Ошибка! Проверьте форму.")
+        return render(
+            request,
+            "articles/update.html",
+            {"form": form, "article_id": kwargs.get("id")},
+        )
