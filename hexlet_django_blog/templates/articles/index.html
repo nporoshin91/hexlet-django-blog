@@ -17,7 +17,7 @@
             </h2>
             <p class="card-text text-muted">{{ article.body|slice:":200" }}...</p>
             <div class="d-flex justify-content-end">
-                <a href="{% url 'article_update' id=article.id %}" class="btn btn-sm btn-outline-primary">✏️
+                <a href="{% url 'article_update' article_id=article.id %}" class="btn btn-sm btn-outline-primary">✏️
                     Редактировать</a>
             </div>
         </div>

@@ -1,5 +1,7 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.generic import TemplateView
 
 from hexlet_django_blog.articles.forms import ArticleForm
@@ -20,8 +22,22 @@ class IndexView(TemplateView):
 class ArticleView(TemplateView):
     template_name = "articles/details.html"
 
+    @staticmethod
+    def get_article_by_id(**kwargs):
+        return get_object_or_404(Article, id=kwargs.get("article_id"))
+
     def get(self, request, *args, **kwargs):
-        article = get_object_or_404(Article, id=kwargs.get("article_id"))
+        article = self.get_article_by_id(**kwargs)
+        return render(request, self.template_name, {"article": article})
+
+    def delete(self, request, *args, **kwargs):
+        article = self.get_article_by_id(**kwargs)
+        if article:
+            article.delete()
+            messages.success(request, "Статья успешно удалена!")
+            return JsonResponse({"redirect_url": reverse("articles")}, status=200)
+
+        messages.error(request, "Произошла ошибка при удаление статьи.")
         return render(request, self.template_name, {"article": article})
 
 
@@ -43,18 +59,18 @@ class ArticleFormCreateView(TemplateView):
 
 
 class ArticleFormEditView(TemplateView):
-    template_name = "articles/edit.html"
+    template_name = "articles/update.html"
 
     @staticmethod
     def get_article_by_id(**kwargs):
-        return get_object_or_404(Article, id=kwargs.get("id"))
+        return get_object_or_404(Article, id=kwargs.get("article_id"))
 
     def get(self, request, *args, **kwargs):
         form = ArticleForm(instance=self.get_article_by_id(**kwargs))
         return render(
             request,
-            "articles/update.html",
-            {"form": form, "article_id": kwargs.get("id")},
+            self.template_name,
+            {"form": form, "article_id": kwargs.get("article_id")},
         )
 
     def post(self, request, *args, **kwargs):
@@ -67,6 +83,6 @@ class ArticleFormEditView(TemplateView):
         messages.error(request, "Ошибка! Проверьте форму.")
         return render(
             request,
-            "articles/update.html",
-            {"form": form, "article_id": kwargs.get("id")},
+            self.template_name,
+            {"form": form, "article_id": kwargs.get("article_id")},
         )
